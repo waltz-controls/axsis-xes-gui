@@ -1,7 +1,7 @@
 {
-  "name": "@waltz-controls/XXX",
+  "name": "@ingvord/axsis-gui",
   "version": "1.0.0",
-  "description": "XXX",
+  "description": "WebGI for AXSIS-XES",
   "main": "dist/module/index.js",
   "module": "dist/module/index.js",
   "directories": {
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/waltz-controls/XXX.git"
+    "url": "git+https://github.com/ingvord/axsis-gui.git"
   },
   "keywords": [
     "waltz",
@@ -32,9 +32,9 @@
   "author": "Ingvord",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/waltz-controls/XXX/issues"
+    "url": "https://github.com/ingvord/axsis-gui/issues"
   },
-  "homepage": "https://github.com/waltz-controls/XXX",
+  "homepage": "https://github.com/ingvord/axsis-gui",
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
@@ -64,20 +64,9 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
-    "@waltz-controls/middleware": "^2.0.0",
-    "@waltz-controls/tango-rest-client": "^1.5.0",
-    "@waltz-controls/waltz-tango-rest-plugin": "^2.0.2",
-    "@waltz-controls/waltz-user-actions-plugin": "^2.0.0",
-    "@waltz-controls/waltz-user-context-plugin": "^2.0.0",
-    "@waltz-controls/waltz-webix-extensions": "^1.0.10",
-    "codemirror": "^5.53.2"    
+    "@waltz-controls/middleware": "^2.0.0"
   },
   "runtimeDependencies": [
-    "@waltz-controls/middleware",
-    "@waltz-controls/tango-rest-client",
-    "@waltz-controls/waltz-tango-rest-plugin",
-    "@waltz-controls/waltz-user-actions-plugin",
-    "@waltz-controls/waltz-user-context-plugin",
-    "@waltz-controls/waltz-webix-extensions"
+    "@waltz-controls/middleware"
   ]
 }

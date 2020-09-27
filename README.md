@@ -1,8 +1,9 @@
-# waltz-webpack-plugin
-Waltz UI plugin managed by webpack
+# AXSIS-GUI
+
+WebGUI application for AXSIS-XES
 
 ```bash
-npm install @waltz-controls/XXX --registry=https://npm.pkg.github.com/waltz-controls
+npm install @ingvord/axsis-gui --registry=https://npm.pkg.github.com/ingvord
 ```
 
 # Usage
