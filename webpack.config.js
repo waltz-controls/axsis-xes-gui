@@ -29,6 +29,7 @@ module.exports = function (env) {
             rules: [
                 {
                     test: /\.js$/,
+                    exclude: /webix\.(min\.|)js$/,
                     use: "babel-loader?" + JSON.stringify(babelSettings)
                 },
                 {
@@ -48,11 +49,7 @@ module.exports = function (env) {
         stats: "minimal",
         resolve: {
             extensions: [".js"],
-            modules: ["./src", "node_modules"],
-            alias: {
-                "jet-views": path.resolve(__dirname, "sources/views"),
-                "jet-locales": path.resolve(__dirname, "sources/locales")
-            }
+            modules: ["./src", "node_modules"]
         },
         plugins: [
             new MiniCssExtractPlugin({
@@ -75,8 +72,8 @@ module.exports = function (env) {
         devServer: {
             stats: "errors-only",
             proxy: {
-                "/tango": {
-                    target: 'http://localhost:10001'
+                "/axsis": {
+                    target: 'http://localhost:5000'
                 },
                 "/user-context": {
                     target: 'http://localhost:3000'
