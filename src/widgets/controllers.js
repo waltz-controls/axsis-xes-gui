@@ -62,6 +62,8 @@ export default class ControllersWidget extends WaltzWidget {
                             view: "button", value: "Proceed", type: "form", hotkey: "enter", click: function () {
                                 const form = this.getFormView();
                                 if (!form.validate()) return;
+                                //TODO validate host:port
+
 
                                 const controllers = [
                                     new PiController("Controller 1", form.getValues().cntrl1),
@@ -85,16 +87,12 @@ export default class ControllersWidget extends WaltzWidget {
         })
     }
 
-    get view(){
-        return this.$$view;
-    }
-
     run(){
         this.$$view = webix.ui(this.ui())
     }
 
     async proceed(controllers){
-        this.view.destructor();
+        this.$$view.destructor();
         const main = await this.app.getContext(kMainApp);
         main.registerContext(kControllersCtx, controllers);
         main.run();
