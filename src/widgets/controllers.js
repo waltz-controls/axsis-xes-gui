@@ -6,12 +6,14 @@ import PiAxisController, {kPiAxisController} from "controllers/pi_controller";
 export const kControllersWidget = "widget:controllers";
 const kProceed = "widget:controllers:proceed"
 
+const kDefaultPiPort = "50000";
+
 function validateIpAndPort(input) {
     let [host, port] = input.split(":");
-    port = port || "5000";
+    port = port || kDefaultPiPort;
     const ip = host.split(".");
     return validateNum(port, 1, 65535) &&
-        ip.length == 4 &&
+        ip.length === 4 &&
         ip.every(function (segment) {
             return validateNum(segment, 0, 255);
         });
@@ -24,7 +26,7 @@ function validateNum(input, min, max) {
 
 function newPiController(input) {
     let [host, port] = input.split(":");
-    port = +port || 5000;
+    port = +port || +kDefaultPiPort;
     return new PiController(host.split('.')[3], host, port)
 }
 
@@ -96,6 +98,7 @@ export default class ControllersWidget extends WaltzWidget {
                                 ];
 
 
+                                webix.storage.session.put(kControllersCtx, form.getValues());
                                 root.proceed(controllers);
                             }
                         },
@@ -104,6 +107,7 @@ export default class ControllersWidget extends WaltzWidget {
                                 const form = this.getFormView();
                                 form.clear();
                                 form.clearValidation();
+                                webix.storage.session.remove(kControllersCtx);
                             }
                         }
                     ]
@@ -122,13 +126,17 @@ export default class ControllersWidget extends WaltzWidget {
 
     run() {
         this.$$view = webix.ui(this.ui())
+
+        if (webix.storage.session.get(kControllersCtx) !== null) {
+            $$('frmControllers').setValues(webix.storage.session.get(kControllersCtx))
+        }
     }
 
     proceed(controllers) {
         //TODO progress
         Promise.all(controllers.map(controller => {
             return new PiAxisController(this.app, controller).initialize()
-        })).then(async resp => {
+        })).then(async controllers => {
             this.$$view.destructor();
             const main = await this.app.getContext(kMainApp);
             main.registerContext(kControllersCtx, controllers);
