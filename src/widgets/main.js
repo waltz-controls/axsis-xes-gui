@@ -1,15 +1,15 @@
 import {WaltzWidget} from "@waltz-controls/middleware";
 import newCrystalView from "views/crystal_view";
-import PiCrystal from "../models/pi_crystal";
-import PiMotor from "../models/pi_motor";
+import PiCrystal from "models/pi_crystal";
+import PiMotor, {kDummyMotors} from "models/pi_motor";
 
-const kAxsisWidget = "main";
+const kAxsisWidget = "widget:main";
 
-function createCrystals(){
+function createCrystals() {
     return new Array(8)
-        .fill(0,0,8)
+        .fill(0, 0, 8)
         .map((dummy, ndx) => ndx + 1)
-        .map(ndx => new PiCrystal(ndx, null, [new PiMotor(3*ndx, null),new PiMotor(3*ndx + 1, null),new PiMotor(3*ndx + 2, null)]));
+        .map(ndx => new PiCrystal(ndx, null, [new PiMotor(3 * ndx, null), new PiMotor(3 * ndx + 1, null), new PiMotor(3 * ndx + 2, null)]));
 }
 
 function createCrystalPanels(crystals){
@@ -527,32 +527,7 @@ export default class AxsisMain extends WaltzWidget {
                                     },
                                     {id: "dummy", header: "", fillspace: true}
                                 ],
-                                data: [
-                                    {id: "Crystal 1 Motor 1", position: 12.2, servo: false},
-                                    {id: "Crystal 1 Motor 2", position: 12.2, servo: true},
-                                    {id: "Crystal 1 Motor 3", position: 12.2, servo: false},
-                                    {id: "Crystal 2 Motor 1", position: 12.2, servo: true},
-                                    {id: "Crystal 2 Motor 2", position: 12.2, servo: false},
-                                    {id: "Crystal 2 Motor 3", position: 12.2, servo: true},
-                                    {id: "Crystal 3 Motor 1", position: 12.2, servo: false},
-                                    {id: "Crystal 3 Motor 2", position: 12.2, servo: false},
-                                    {id: "Crystal 3 Motor 3", position: 12.2, servo: true},
-                                    {id: "Crystal 4 Motor 1", position: 12.2, servo: false},
-                                    {id: "Crystal 4 Motor 2", position: 12.2, servo: true},
-                                    {id: "Crystal 4 Motor 3", position: 12.2, servo: true},
-                                    {id: "Crystal 5 Motor 1", position: 12.2, servo: false},
-                                    {id: "Crystal 5 Motor 2", position: 12.2, servo: true},
-                                    {id: "Crystal 5 Motor 3", position: 12.2, servo: false},
-                                    {id: "Crystal 6 Motor 1", position: 12.2, servo: true},
-                                    {id: "Crystal 6 Motor 2", position: 12.2, servo: false},
-                                    {id: "Crystal 6 Motor 3", position: 12.2, servo: true},
-                                    {id: "Crystal 7 Motor 1", position: 12.2, servo: false},
-                                    {id: "Crystal 7 Motor 2", position: 12.2, servo: false},
-                                    {id: "Crystal 7 Motor 3", position: 12.2, servo: true},
-                                    {id: "Crystal 8 Motor 1", position: 12.2, servo: false},
-                                    {id: "Crystal 8 Motor 2", position: 12.2, servo: true},
-                                    {id: "Crystal 8 Motor 3", position: 12.2, servo: true}
-                                ]
+                                data: kDummyMotors
                             }
                         },
                         {
