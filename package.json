@@ -1,7 +1,7 @@
 {
   "name": "@ingvord/axsis-gui",
   "version": "1.0.0",
-  "description": "WebGI for AXSIS-XES",
+  "description": "WebGUI for AXSIS-XES",
   "main": "dist/module/index.js",
   "module": "dist/module/index.js",
   "directories": {

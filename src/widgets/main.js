@@ -1,5 +1,4 @@
 import {WaltzWidget} from "@waltz-controls/middleware";
-import {kControllersCtx} from "../../index";
 import newCrystalView from "views/crystal_view";
 import PiCrystal from "../models/pi_crystal";
 import PiMotor from "../models/pi_motor";
@@ -31,29 +30,538 @@ export default class AxsisMain extends WaltzWidget {
         return {
             cols:[
                 {
-                    view: "accordion",
-                    multi: true,
-                    rows: [
-                        {
-                            rows:[
-                                {
-                                    view: "button",
-                                    value: "HOME",
-                                    css: "webix_primary"
-                                },
-                                {
-                                    view: "button",
-                                    value: "STOP",
-                                    css: "webix_danger"
-                                }
-                            ]
-                        }
+                    view: "scrollview",
+                    maxWidth: 240,
+                    body: {
+                        view: "accordion",
+                        multi: true,
+                        rows: [
+                            {
+                                rows: [
+                                    {
+                                        view: "button",
+                                        value: "HOME",
+                                        css: "webix_primary"
+                                    },
+                                    {
+                                        view: "button",
+                                        value: "STOP",
+                                        css: "webix_danger"
+                                    }
+                                ]
+                            }
 
-                    ].concat(createCrystalPanels(this.crystals))
+                        ].concat(createCrystalPanels(this.crystals))
+                    }
                 },
                 {
-                    gravity: 4,
-                    template: "tabview"
+                    view: "tabview",
+                    cells: [
+                        {
+                            header: "138",
+                            body: {
+                                rows: [
+                                    {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "Crystal 1", width: 150},
+                                            {id: "value", header: "Value", width: 120},
+                                            {
+                                                id: "plusminus", header: "Pos/Neg", template(obj) {
+                                                    return `<span class="webix_icon switcher mdi mdi-${obj.plusminus ? "plus" : "minus"}"></span>`
+                                                }, width: 80
+                                            },
+                                            {
+                                                id: "reference", header: "", width: 100, template() {
+                                                    return `<div class='webix_el_button webix_primary'><button class="webix_button">Set</button></div>`
+                                                }
+                                            },
+                                            //TODO link with outer collection
+                                            {
+                                                id: "m1.position", header: "m1", width: 100, template(obj) {
+                                                    return obj.motors[0].position
+                                                }
+                                            },
+                                            {
+                                                id: "m2.position", header: "m2", width: 100, template(obj) {
+                                                    return obj.motors[1].position
+                                                }
+                                            },
+                                            {
+                                                id: "m3.position", header: "m3", width: 100, template(obj) {
+                                                    return obj.motors[2].position
+                                                }
+                                            },
+                                            {id: "dummy", header: "", fillspace: true}
+                                        ],
+                                        data: [
+                                            {
+                                                id: "Angle",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Focus",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Bias",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "Crystal 2", width: 150},
+                                            {id: "value", header: "Value", width: 120},
+                                            {
+                                                id: "plusminus", header: "Pos/Neg", template(obj) {
+                                                    return `<span class="webix_icon switcher mdi mdi-${obj.plusminus ? "plus" : "minus"}"></span>`
+                                                }, width: 80
+                                            },
+                                            {
+                                                id: "reference", header: "", width: 100, template() {
+                                                    return `<div class='webix_el_button webix_primary'><button class="webix_button">Set</button></div>`
+                                                }
+                                            },
+                                            //TODO link with outer collection
+                                            {
+                                                id: "m1.position", header: "m1", width: 100, template(obj) {
+                                                    return obj.motors[0].position
+                                                }
+                                            },
+                                            {
+                                                id: "m2.position", header: "m2", width: 100, template(obj) {
+                                                    return obj.motors[1].position
+                                                }
+                                            },
+                                            {
+                                                id: "m3.position", header: "m3", width: 100, template(obj) {
+                                                    return obj.motors[2].position
+                                                }
+                                            },
+                                            {id: "dummy", header: "", fillspace: true}
+                                        ],
+                                        data: [
+                                            {
+                                                id: "Angle",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Focus",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Bias",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "Crystal 3", width: 150},
+                                            {id: "value", header: "Value", width: 120},
+                                            {
+                                                id: "plusminus", header: "Pos/Neg", template(obj) {
+                                                    return `<span class="webix_icon switcher mdi mdi-${obj.plusminus ? "plus" : "minus"}"></span>`
+                                                }, width: 80
+                                            },
+                                            {
+                                                id: "reference", header: "", width: 100, template() {
+                                                    return `<div class='webix_el_button webix_primary'><button class="webix_button">Set</button></div>`
+                                                }
+                                            },
+                                            //TODO link with outer collection
+                                            {
+                                                id: "m1.position", header: "m1", width: 100, template(obj) {
+                                                    return obj.motors[0].position
+                                                }
+                                            },
+                                            {
+                                                id: "m2.position", header: "m2", width: 100, template(obj) {
+                                                    return obj.motors[1].position
+                                                }
+                                            },
+                                            {
+                                                id: "m3.position", header: "m3", width: 100, template(obj) {
+                                                    return obj.motors[2].position
+                                                }
+                                            },
+                                            {id: "dummy", header: "", fillspace: true}
+                                        ],
+                                        data: [
+                                            {
+                                                id: "Angle",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Focus",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Bias",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "Crystal 4", width: 150},
+                                            {id: "value", header: "Value", width: 120},
+                                            {
+                                                id: "plusminus", header: "Pos/Neg", template(obj) {
+                                                    return `<span class="webix_icon switcher mdi mdi-${obj.plusminus ? "plus" : "minus"}"></span>`
+                                                }, width: 80
+                                            },
+                                            {
+                                                id: "reference", header: "", width: 100, template() {
+                                                    return `<div class='webix_el_button webix_primary'><button class="webix_button">Set</button></div>`
+                                                }
+                                            },
+                                            //TODO link with outer collection
+                                            {
+                                                id: "m1.position", header: "m1", width: 100, template(obj) {
+                                                    return obj.motors[0].position
+                                                }
+                                            },
+                                            {
+                                                id: "m2.position", header: "m2", width: 100, template(obj) {
+                                                    return obj.motors[1].position
+                                                }
+                                            },
+                                            {
+                                                id: "m3.position", header: "m3", width: 100, template(obj) {
+                                                    return obj.motors[2].position
+                                                }
+                                            },
+                                            {id: "dummy", header: "", fillspace: true}
+                                        ],
+                                        data: [
+                                            {
+                                                id: "Angle",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Focus",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Bias",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            header: "139",
+                            body: {
+                                rows: [
+                                    {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "Crystal 1", width: 150},
+                                            {id: "value", header: "Value", width: 120},
+                                            {
+                                                id: "plusminus", header: "Pos/Neg", template(obj) {
+                                                    return `<span class="webix_icon switcher mdi mdi-${obj.plusminus ? "plus" : "minus"}"></span>`
+                                                }, width: 80
+                                            },
+                                            {
+                                                id: "reference", header: "", width: 100, template() {
+                                                    return `<div class='webix_el_button webix_primary'><button class="webix_button">Set</button></div>`
+                                                }
+                                            },
+                                            //TODO link with outer collection
+                                            {
+                                                id: "m1.position", header: "m1", width: 100, template(obj) {
+                                                    return obj.motors[0].position
+                                                }
+                                            },
+                                            {
+                                                id: "m2.position", header: "m2", width: 100, template(obj) {
+                                                    return obj.motors[1].position
+                                                }
+                                            },
+                                            {
+                                                id: "m3.position", header: "m3", width: 100, template(obj) {
+                                                    return obj.motors[2].position
+                                                }
+                                            },
+                                            {id: "dummy", header: "", fillspace: true}
+                                        ],
+                                        data: [
+                                            {
+                                                id: "Angle",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Focus",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Bias",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "Crystal 2", width: 150},
+                                            {id: "value", header: "Value", width: 120},
+                                            {
+                                                id: "plusminus", header: "Pos/Neg", template(obj) {
+                                                    return `<span class="webix_icon switcher mdi mdi-${obj.plusminus ? "plus" : "minus"}"></span>`
+                                                }, width: 80
+                                            },
+                                            {
+                                                id: "reference", header: "", width: 100, template() {
+                                                    return `<div class='webix_el_button webix_primary'><button class="webix_button">Set</button></div>`
+                                                }
+                                            },
+                                            //TODO link with outer collection
+                                            {
+                                                id: "m1.position", header: "m1", width: 100, template(obj) {
+                                                    return obj.motors[0].position
+                                                }
+                                            },
+                                            {
+                                                id: "m2.position", header: "m2", width: 100, template(obj) {
+                                                    return obj.motors[1].position
+                                                }
+                                            },
+                                            {
+                                                id: "m3.position", header: "m3", width: 100, template(obj) {
+                                                    return obj.motors[2].position
+                                                }
+                                            },
+                                            {id: "dummy", header: "", fillspace: true}
+                                        ],
+                                        data: [
+                                            {
+                                                id: "Angle",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Focus",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Bias",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "Crystal 3", width: 150},
+                                            {id: "value", header: "Value", width: 120},
+                                            {
+                                                id: "plusminus", header: "Pos/Neg", template(obj) {
+                                                    return `<span class="webix_icon switcher mdi mdi-${obj.plusminus ? "plus" : "minus"}"></span>`
+                                                }, width: 80
+                                            },
+                                            {
+                                                id: "reference", header: "", width: 100, template() {
+                                                    return `<div class='webix_el_button webix_primary'><button class="webix_button">Set</button></div>`
+                                                }
+                                            },
+                                            //TODO link with outer collection
+                                            {
+                                                id: "m1.position", header: "m1", width: 100, template(obj) {
+                                                    return obj.motors[0].position
+                                                }
+                                            },
+                                            {
+                                                id: "m2.position", header: "m2", width: 100, template(obj) {
+                                                    return obj.motors[1].position
+                                                }
+                                            },
+                                            {
+                                                id: "m3.position", header: "m3", width: 100, template(obj) {
+                                                    return obj.motors[2].position
+                                                }
+                                            },
+                                            {id: "dummy", header: "", fillspace: true}
+                                        ],
+                                        data: [
+                                            {
+                                                id: "Angle",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Focus",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Bias",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "Crystal 4", width: 150},
+                                            {id: "value", header: "Value", width: 120},
+                                            {
+                                                id: "plusminus", header: "Pos/Neg", template(obj) {
+                                                    return `<span class="webix_icon switcher mdi mdi-${obj.plusminus ? "plus" : "minus"}"></span>`
+                                                }, width: 80
+                                            },
+                                            {
+                                                id: "reference", header: "", width: 100, template() {
+                                                    return `<div class='webix_el_button webix_primary'><button class="webix_button">Set</button></div>`
+                                                }
+                                            },
+                                            //TODO link with outer collection
+                                            {
+                                                id: "m1.position", header: "m1", width: 100, template(obj) {
+                                                    return obj.motors[0].position
+                                                }
+                                            },
+                                            {
+                                                id: "m2.position", header: "m2", width: 100, template(obj) {
+                                                    return obj.motors[1].position
+                                                }
+                                            },
+                                            {
+                                                id: "m3.position", header: "m3", width: 100, template(obj) {
+                                                    return obj.motors[2].position
+                                                }
+                                            },
+                                            {id: "dummy", header: "", fillspace: true}
+                                        ],
+                                        data: [
+                                            {
+                                                id: "Angle",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Focus",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            },
+                                            {
+                                                id: "Bias",
+                                                value: 0.1,
+                                                plusminus: 0,
+                                                motors: [{position: 12.2}, {position: 12.2}, {position: 12.2}]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            header: "Motors",
+                            body: {
+                                view: "datatable",
+                                columns: [
+                                    {id: "id", header: "", width: 150},
+                                    {id: "position", header: "Position", width: 120},
+                                    {
+                                        id: "servo", header: "Servo", template(obj) {
+                                            return `<span class="webix_icon switcher mdi mdi-toggle-switch-${obj.servo ? "off" : "outline"}"></span>`
+                                        }, width: 80
+                                    },
+                                    {
+                                        id: "reference", header: "Reference", width: 100, template() {
+                                            return `<div class='webix_el_button webix_primary'><button class="webix_button">Home</button></div>`
+                                        }
+                                    },
+                                    {
+                                        id: "stop", header: "Stop", width: 100, template() {
+                                            return `<div class='webix_el_button webix_danger'><button class="webix_button">Stop</button></div>`
+                                        }
+                                    },
+                                    {id: "dummy", header: "", fillspace: true}
+                                ],
+                                data: [
+                                    {id: "Crystal 1 Motor 1", position: 12.2, servo: false},
+                                    {id: "Crystal 1 Motor 2", position: 12.2, servo: true},
+                                    {id: "Crystal 1 Motor 3", position: 12.2, servo: false},
+                                    {id: "Crystal 2 Motor 1", position: 12.2, servo: true},
+                                    {id: "Crystal 2 Motor 2", position: 12.2, servo: false},
+                                    {id: "Crystal 2 Motor 3", position: 12.2, servo: true},
+                                    {id: "Crystal 3 Motor 1", position: 12.2, servo: false},
+                                    {id: "Crystal 3 Motor 2", position: 12.2, servo: false},
+                                    {id: "Crystal 3 Motor 3", position: 12.2, servo: true},
+                                    {id: "Crystal 4 Motor 1", position: 12.2, servo: false},
+                                    {id: "Crystal 4 Motor 2", position: 12.2, servo: true},
+                                    {id: "Crystal 4 Motor 3", position: 12.2, servo: true},
+                                    {id: "Crystal 5 Motor 1", position: 12.2, servo: false},
+                                    {id: "Crystal 5 Motor 2", position: 12.2, servo: true},
+                                    {id: "Crystal 5 Motor 3", position: 12.2, servo: false},
+                                    {id: "Crystal 6 Motor 1", position: 12.2, servo: true},
+                                    {id: "Crystal 6 Motor 2", position: 12.2, servo: false},
+                                    {id: "Crystal 6 Motor 3", position: 12.2, servo: true},
+                                    {id: "Crystal 7 Motor 1", position: 12.2, servo: false},
+                                    {id: "Crystal 7 Motor 2", position: 12.2, servo: false},
+                                    {id: "Crystal 7 Motor 3", position: 12.2, servo: true},
+                                    {id: "Crystal 8 Motor 1", position: 12.2, servo: false},
+                                    {id: "Crystal 8 Motor 2", position: 12.2, servo: true},
+                                    {id: "Crystal 8 Motor 3", position: 12.2, servo: true}
+                                ]
+                            }
+                        },
+                        {
+                            header: "Log",
+                            body: {
+                                template: "Some content"
+                            }
+                        }
+                    ]
                 }
             ]
         }
