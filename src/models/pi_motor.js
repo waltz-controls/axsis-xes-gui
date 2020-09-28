@@ -26,11 +26,10 @@ export const kDummyMotors = [
 ];
 
 export default class PiMotor {
-    constructor(id, crystal) {
+    constructor(id, position, servo, reference) {
         this.id = id;
-        this.crystal = crystal;
-        this.position = undefined;
-        this.servo = undefined;
-        this.reference = undefined;
+        this.position = position;
+        this.servo = servo;
+        this.reference = reference;
     }
 }
