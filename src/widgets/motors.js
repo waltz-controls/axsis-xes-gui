@@ -19,9 +19,9 @@ export default class MotorsWidget extends WaltzWidget {
         super(kMotorsWidget, app);
 
         this.listen(payload => {
-            this.view.data.updateItem(payload.id, payload)
+            this.view.updateItem(payload.id, payload)
 
-            this.view.data.filter(item => item.visible)
+            this.view.filter(item => item.visible)
         }, kToggleMotorVisibility, kCrystalsWidget)
     }
 
@@ -72,6 +72,7 @@ export default class MotorsWidget extends WaltzWidget {
     async run() {
         const controllers = await this.app.getContext(kPiAxisControllerCtx);
 
+        this.view.clearAll();
         this.view.parse(
             controllers
                 .flatMap((controller, ndx) =>
