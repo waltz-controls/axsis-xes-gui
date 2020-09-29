@@ -1,27 +1,12 @@
 import {WaltzWidget} from "@waltz-controls/middleware";
-import newCrystalView from "views/crystal_view";
-import PiCrystal from "models/pi_crystal";
-import PiMotor, {kDummyMotors} from "models/pi_motor";
+import {kMotorsWidget} from "widgets/motors";
+import {kCrystalsWidget} from "widgets/crystals";
 
 const kAxsisWidget = "widget:main";
-
-function createCrystals() {
-    return new Array(8)
-        .fill(0, 0, 8)
-        .map((dummy, ndx) => ndx + 1)
-        .map(ndx => new PiCrystal(ndx, null, [new PiMotor(3 * ndx, null), new PiMotor(3 * ndx + 1, null), new PiMotor(3 * ndx + 2, null)]));
-}
-
-function createCrystalPanels(crystals){
-    return crystals.map(crystal => newCrystalView(crystal));
-}
 
 export default class AxsisMain extends WaltzWidget {
     constructor(app) {
         super(kAxsisWidget, app);
-
-
-        this.crystals = createCrystals();
     }
 
 
@@ -33,25 +18,18 @@ export default class AxsisMain extends WaltzWidget {
                     view: "scrollview",
                     maxWidth: 240,
                     body: {
-                        view: "accordion",
-                        multi: true,
                         rows: [
                             {
-                                rows: [
-                                    {
-                                        view: "button",
-                                        value: "HOME",
-                                        css: "webix_primary"
-                                    },
-                                    {
-                                        view: "button",
-                                        value: "STOP",
-                                        css: "webix_danger"
-                                    }
-                                ]
+                                view: "button",
+                                value: "HOME",
+                                css: "webix_primary"
+                            },
+                            {
+                                view: "button",
+                                value: "STOP",
+                                css: "webix_danger"
                             }
-
-                        ].concat(createCrystalPanels(this.crystals))
+                        ].concat(this.app.getWidget(kCrystalsWidget).ui())
                     }
                 },
                 {
@@ -505,30 +483,7 @@ export default class AxsisMain extends WaltzWidget {
                         },
                         {
                             header: "Motors",
-                            body: {
-                                view: "datatable",
-                                columns: [
-                                    {id: "id", header: "", width: 150},
-                                    {id: "position", header: "Position", width: 120},
-                                    {
-                                        id: "servo", header: "Servo", template(obj) {
-                                            return `<span class="webix_icon switcher mdi mdi-toggle-switch-${obj.servo ? "off" : "outline"}"></span>`
-                                        }, width: 80
-                                    },
-                                    {
-                                        id: "reference", header: "Reference", width: 100, template() {
-                                            return `<div class='webix_el_button webix_primary'><button class="webix_button">Home</button></div>`
-                                        }
-                                    },
-                                    {
-                                        id: "stop", header: "Stop", width: 100, template() {
-                                            return `<div class='webix_el_button webix_danger'><button class="webix_button">Stop</button></div>`
-                                        }
-                                    },
-                                    {id: "dummy", header: "", fillspace: true}
-                                ],
-                                data: kDummyMotors
-                            }
+                            body: this.app.getWidget(kMotorsWidget).ui()
                         },
                         {
                             header: "Log",

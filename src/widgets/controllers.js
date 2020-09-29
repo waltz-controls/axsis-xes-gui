@@ -1,7 +1,7 @@
 import {WaltzWidget} from "@waltz-controls/middleware";
 import PiController from "models/pi_controller";
-import {kControllersCtx, kMainApp} from "../../index";
-import PiAxisController, {kPiAxisController} from "controllers/pi_controller";
+import {kMainApp} from "../../index";
+import PiAxisController, {kPiAxisController, kPiAxisControllerCtx} from "controllers/pi_controller";
 
 export const kControllersWidget = "widget:controllers";
 const kProceed = "widget:controllers:proceed"
@@ -24,10 +24,10 @@ function validateNum(input, min, max) {
     return num >= min && num <= max && input === num.toString();
 }
 
-function newPiController(input) {
+function newPiController(ndx, input) {
     let [host, port] = input.split(":");
     port = +port || +kDefaultPiPort;
-    return new PiController(host.split('.')[3], host, port)
+    return new PiController(ndx, host, port)
 }
 
 function newLayout(center) {
@@ -93,12 +93,12 @@ export default class ControllersWidget extends WaltzWidget {
                                 if (!form.validate()) return;
 
                                 const controllers = [
-                                    newPiController(form.getValues().cntrl1),
-                                    newPiController(form.getValues().cntrl2)
+                                    newPiController(0, form.getValues().cntrl1),
+                                    newPiController(1, form.getValues().cntrl2)
                                 ];
 
 
-                                webix.storage.session.put(kControllersCtx, form.getValues());
+                                webix.storage.session.put(kPiAxisControllerCtx, form.getValues());
                                 root.proceed(controllers);
                             }
                         },
@@ -107,7 +107,7 @@ export default class ControllersWidget extends WaltzWidget {
                                 const form = this.getFormView();
                                 form.clear();
                                 form.clearValidation();
-                                webix.storage.session.remove(kControllersCtx);
+                                webix.storage.session.remove(kPiAxisControllerCtx);
                             }
                         }
                     ]
@@ -127,8 +127,8 @@ export default class ControllersWidget extends WaltzWidget {
     run() {
         this.$$view = webix.ui(this.ui())
 
-        if (webix.storage.session.get(kControllersCtx) !== null) {
-            $$('frmControllers').setValues(webix.storage.session.get(kControllersCtx))
+        if (webix.storage.session.get(kPiAxisControllerCtx) !== null) {
+            $$('frmControllers').setValues(webix.storage.session.get(kPiAxisControllerCtx))
         }
     }
 
@@ -139,7 +139,7 @@ export default class ControllersWidget extends WaltzWidget {
         })).then(async controllers => {
             this.$$view.destructor();
             const main = await this.app.getContext(kMainApp);
-            main.registerContext(kControllersCtx, controllers);
+            main.registerContext(kPiAxisControllerCtx, controllers);
             main.run();
         })
     }

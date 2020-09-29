@@ -1,7 +1,8 @@
 import {Controller} from "@waltz-controls/middleware";
 import PiControllerClient from "transport/pi_controller_client";
-import PiMotor from "../models/pi_motor";
+import PiMotor from "models/pi_motor";
 
+export const kPiAxisControllerCtx = "controllers";
 export const kPiAxisController = "controller:pi"
 
 export default class PiAxisController extends Controller {
@@ -30,7 +31,7 @@ export default class PiAxisController extends Controller {
                 this.controller.version = resp[0].version;
                 this.controller.motors.clearAll();
                 this.controller.motors.parse(
-                    Object.keys(resp[1]).map(key => new PiMotor(`${this.controller.id}:${key}`, resp[1][key], resp[2][key], resp[3][key]))
+                    Object.keys(resp[1]).map(key => new PiMotor(key, resp[1][key], resp[2][key], resp[3][key]))
                 )
                 return this.controller;
             })
