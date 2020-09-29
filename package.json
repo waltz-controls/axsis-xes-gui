@@ -15,7 +15,7 @@
     "build": "webpack --env.production true",
     "module": "webpack --env.module true",
     "standalone": "webpack --env.production true --env.module true --env.standalone true",
-    "start": "webpack-dev-server --env"
+    "start": "webpack-dev-server --env --host 0.0.0.0"
   },
   "repository": {
     "type": "git",
