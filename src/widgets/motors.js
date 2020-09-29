@@ -29,6 +29,7 @@ export default class MotorsWidget extends WaltzWidget {
         return {
             view: "datatable",
             id: "motors",
+            editable: true,
             columns: [
                 {
                     id: "id", header: "Motor", width: 150, template(obj) {
@@ -36,7 +37,7 @@ export default class MotorsWidget extends WaltzWidget {
                         return `<strong>Crystal ${crstlId}</strong> Motor ${motorId}`;
                     }
                 },
-                {id: "position", header: "Position", width: 120},
+                {id: "position", header: "Position", width: 240, editor: "text"},
                 {
                     id: "set", header: "", template(obj) {
                         return `<div class='webix_el_button webix_base'><button class="webix_button">Set</button></div>`
@@ -44,7 +45,7 @@ export default class MotorsWidget extends WaltzWidget {
                 },
                 {
                     id: "servo", header: "Servo", template(obj) {
-                        return `<span class="webix_icon switcher mdi mdi-toggle-switch-${obj.servo ? "off" : "outline"}"></span>`
+                        return `<span class="webix_icon servo mdi mdi-toggle-switch-${obj.servo ? "off" : "outline"}"></span>`
                     }, width: 80
                 },
                 {
@@ -52,7 +53,7 @@ export default class MotorsWidget extends WaltzWidget {
                 },
                 {
                     id: "home", header: "", width: 100, template() {
-                        return `<div class='webix_el_button webix_primary'><button class="webix_button">Home</button></div>`
+                        return `<div class='webix_el_button home webix_primary'><button class="webix_button">Home</button></div>`
                     }
                 },
                 {
@@ -61,7 +62,27 @@ export default class MotorsWidget extends WaltzWidget {
                     }
                 },
                 {id: "dummy", header: "", fillspace: true}
-            ]
+            ],
+            onClick: {
+                "set": (ev, id) => {
+
+                },
+                "servo": async (ev, id) => {
+                    const [ctrlId, crstlId, motorId] = id.row.split(':')
+                    const controllers = await this.app.getContext(kPiAxisControllerCtx);
+                    const controller = controllers[crstlId];
+                    const newServo = !this.view.getItem(id.row).servo;
+                    this.view.updateItem(id.row, {servo: newServo});
+                    // new PiAxisController(this.app, controller)
+                    //     .toggleServo({
+                    //         [motorId]: this.view.getItem(id.row).servo
+                    //     })
+
+                },
+                "home": (ev, id) => {
+
+                }
+            }
         }
     }
 

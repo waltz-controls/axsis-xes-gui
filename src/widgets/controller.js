@@ -19,19 +19,18 @@ function createCrystalPanels(controller) {
                         return `<span class="webix_icon switcher mdi mdi-plus"></span>`
                     }, width: 30
                 },
-                //TODO link with outer collection
                 {
-                    id: "m1.position", header: "m1", width: 100, template(obj) {
+                    id: "m1", header: "m1", width: 100, template(obj) {
                         return obj.motors[0].position
                     }
                 },
                 {
-                    id: "m2.position", header: "m2", width: 100, template(obj) {
+                    id: "m2", header: "m2", width: 100, template(obj) {
                         return obj.motors[1].position
                     }
                 },
                 {
-                    id: "m3.position", header: "m3", width: 100, template(obj) {
+                    id: "m3", header: "m3", width: 100, template(obj) {
                         return obj.motors[2].position
                     }
                 },

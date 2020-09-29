@@ -40,4 +40,20 @@ export default class PiAxisController extends Controller {
                 throw err;//abort Promise
             })
     }
+
+    toggleServo(values) {
+        const client = new PiControllerClient(this.controller);
+        client
+            .toggleServo(values)
+            .then(resp => {
+                return client.servo();
+            })
+            .then(resp => {
+                debugger
+            })
+            .catch(err => {
+                this.dispatchError(err);
+                throw err;//abort Promise
+            })
+    }
 }
