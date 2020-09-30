@@ -56,7 +56,7 @@ export default class AxsisMain extends WaltzWidget {
                                 value: "HOME",
                                 css: "webix_primary",
                                 click: () => {
-                                    debugger
+                                    this.homeAll();
                                 }
                             },
                             {
@@ -105,6 +105,11 @@ export default class AxsisMain extends WaltzWidget {
     async stopAll() {
         const controllers = await this.app.getContext(kPiAxisControllerCtx);
         controllers.forEach(controller => new PiAxisController(this.app, controller).stop())
+    }
+
+    async homeAll() {
+        const controllers = await this.app.getContext(kPiAxisControllerCtx);
+        controllers.forEach(controller => new PiAxisController(this.app, controller).home(null))
     }
 
     async toggleServo(value) {
