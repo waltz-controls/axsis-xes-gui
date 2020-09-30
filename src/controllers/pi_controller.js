@@ -98,7 +98,7 @@ export default class PiAxisController extends Controller {
                     if (resp[key] === values[key])
                         this.controller.motors.updateItem(key, {position: resp[key]});
                     else
-                        this.dispatchError(new Error(`Failed to toggle Servo for motor ${key} in controller ${this.controller.ip}`))
+                        this.dispatchError(new Error(`Failed to move motor ${key} in controller ${this.controller.ip} from ${resp[key]} to ${values[key]}`))
 
                 })
             })
@@ -114,11 +114,8 @@ export default class PiAxisController extends Controller {
             .home(values)
             .then(resp => {
                 if (values)
-                    Object.keys(values).forEach(key => {
-                        if (resp[key] === values[key])
-                            this.controller.motors.updateItem(key, {position: resp[key]});
-                        else
-                            this.dispatchError(new Error(`Failed to home motor ${key} in controller ${this.controller.ip}`))
+                    values.forEach(key => {
+                        this.controller.motors.updateItem(key, {position: resp[key]});
                     })
             })
             .catch(err => {
@@ -132,11 +129,8 @@ export default class PiAxisController extends Controller {
         client
             .position()
             .then(resp => {
-                Object.keys(values).forEach(key => {
-                    if (resp[key] === values[key])
-                        this.controller.motors.updateItem(key, {position: resp[key]});
-                    else
-                        this.dispatchError(new Error(`Failed to home motor ${key} in controller ${this.controller.ip}`))
+                Object.keys(resp).forEach(key => {
+                    this.controller.motors.updateItem(key, {position: resp[key]});
                 })
             })
             .catch(err => {
