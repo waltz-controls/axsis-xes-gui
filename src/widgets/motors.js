@@ -1,5 +1,5 @@
 import {WaltzWidget} from "@waltz-controls/middleware";
-import {kPiAxisControllerCtx} from "controllers/pi_controller";
+import {kPiAxisController, kPiAxisControllerCtx, kPiAxisUpdateMotor} from "controllers/pi_controller";
 import {kCrystalsWidget, kToggleMotorVisibility} from "widgets/crystals";
 
 const kFindAll = () => true;
@@ -23,6 +23,15 @@ export default class MotorsWidget extends WaltzWidget {
 
             this.view.filter(item => item.visible)
         }, kToggleMotorVisibility, kCrystalsWidget)
+
+        this.listen(motor => {
+            const {position, servo, reference} = motor;
+            this.view.updateItem(`${motor.controllerId}:${getCrystalId(motor.id, motor.controllerId)}:${motor.id}`, {
+                position,
+                servo,
+                reference
+            })
+        }, kPiAxisUpdateMotor, kPiAxisController)
     }
 
     ui() {
@@ -40,12 +49,12 @@ export default class MotorsWidget extends WaltzWidget {
                 {id: "position", header: "Position", width: 240, editor: "text"},
                 {
                     id: "set", header: "", template(obj) {
-                        return `<div class='webix_el_button webix_base'><button class="webix_button">Set</button></div>`
+                        return `<div class='webix_el_button set webix_base'><button class="webix_button">Set</button></div>`
                     }, width: 80
                 },
                 {
                     id: "servo", header: "Servo", template(obj) {
-                        return `<span class="webix_icon servo mdi mdi-toggle-switch-${obj.servo ? "off" : "outline"}"></span>`
+                        return `<span class="webix_icon servo mdi mdi-toggle-switch-${obj.servo ? "outline" : "off"}"></span>`
                     }, width: 80
                 },
                 {
@@ -65,18 +74,23 @@ export default class MotorsWidget extends WaltzWidget {
             ],
             onClick: {
                 "set": (ev, id) => {
-
-                },
-                "servo": async (ev, id) => {
                     const [ctrlId, crstlId, motorId] = id.row.split(':')
-                    const controllers = await this.app.getContext(kPiAxisControllerCtx);
-                    const controller = controllers[crstlId];
+                    this.view.editStop();
+                    const target = parseFloat(this.view.getItem(id.row).position);
+                    const controller = this.app.getController(ctrlId);
+                    controller
+                        .move({
+                            [motorId]: target
+                        })
+                },
+                "servo": (ev, id) => {
+                    const [ctrlId, crstlId, motorId] = id.row.split(':')
                     const newServo = !this.view.getItem(id.row).servo;
-                    this.view.updateItem(id.row, {servo: newServo});
-                    // new PiAxisController(this.app, controller)
-                    //     .toggleServo({
-                    //         [motorId]: this.view.getItem(id.row).servo
-                    //     })
+                    const controller = this.app.getController(ctrlId);
+                    controller
+                        .toggleServo({
+                            [motorId]: newServo
+                        })
 
                 },
                 "home": (ev, id) => {
