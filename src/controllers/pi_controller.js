@@ -96,7 +96,26 @@ export default class PiAxisController extends Controller {
             .then(resp => {
                 Object.keys(values).forEach(key => {
                     if (resp[key] === values[key])
-                        this.controller.motors.updateItem(key, {servo: resp[key]});
+                        this.controller.motors.updateItem(key, {position: resp[key]});
+                    else
+                        this.dispatchError(new Error(`Failed to toggle Servo for motor ${key} in controller ${this.controller.ip}`))
+
+                })
+            })
+            .catch(err => {
+                this.dispatchError(err);
+                throw err;//abort Promise
+            })
+    }
+
+    home(values) {
+        const client = new PiControllerClient(this.controller);
+        client
+            .home(values)
+            .then(resp => {
+                Object.keys(values).forEach(key => {
+                    if (resp[key] === values[key])
+                        this.controller.motors.updateItem(key, {position: resp[key]});
                     else
                         this.dispatchError(new Error(`Failed to toggle Servo for motor ${key} in controller ${this.controller.ip}`))
 

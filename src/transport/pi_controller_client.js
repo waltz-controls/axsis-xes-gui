@@ -45,6 +45,24 @@ export default class PiControllerClient {
             })
     }
 
+    home(values) {
+        const url = `${this.endpoint}/controllers/${this.controller.id}/reference?ip=${this.controller.ip}&port=${this.controller.port}`
+        return fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
+        })
+            .then(resp => {
+                if (resp.ok) {
+                    return resp.json();
+                } else
+                    throw new Error(`${resp.status}: ${resp.statusText}<p>${url}</p>`)
+            })
+    }
+
+    //TODO axis id
     stop() {
         const url = `${this.endpoint}/controllers/${this.controller.id}/stop?ip=${this.controller.ip}&port=${this.controller.port}`
         return fetch(url, {

@@ -3,6 +3,7 @@ import {kMotorsWidget} from "widgets/motors";
 import {kCrystalsWidget} from "widgets/crystals";
 import ControllerWidget from "./controller";
 import PiAxisController, {kPiAxisControllerCtx, kPiAxisStop} from "controllers/pi_controller";
+import {kFindAll} from "utils";
 
 const kAxsisWidget = "widget:main";
 const kAnyTopic = "*";
@@ -38,6 +39,18 @@ export default class AxsisMain extends WaltzWidget {
                     maxWidth: 240,
                     body: {
                         rows: [
+                            {
+                                view: "toggle",
+                                type: "icon",
+                                id: "servo",
+                                offIcon: "mdi mdi-toggle-switch-off",
+                                onIcon: "mdi mdi-toggle-switch-outline",
+                                offLabel: "Servo OFF",
+                                onLabel: "Servo ON",
+                                click: () => {
+                                    this.toggleServo($$("servo").getValue() === 0)
+                                }
+                            },
                             {
                                 view: "button",
                                 value: "HOME",
@@ -92,5 +105,12 @@ export default class AxsisMain extends WaltzWidget {
     async stopAll() {
         const controllers = await this.app.getContext(kPiAxisControllerCtx);
         controllers.forEach(controller => new PiAxisController(this.app, controller).stop())
+    }
+
+    async toggleServo(value) {
+        const controllers = await this.app.getContext(kPiAxisControllerCtx);
+        controllers.forEach(controller => new PiAxisController(this.app, controller).toggleServo(
+            controller.motors.find(kFindAll).reduce((obj, motor) => (obj[motor.id] = value, obj), {})
+        ))
     }
 }

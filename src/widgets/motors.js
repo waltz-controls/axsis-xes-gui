@@ -53,14 +53,6 @@ export default class MotorsWidget extends WaltzWidget {
                     }, width: 80
                 },
                 {
-                    id: "servo", header: "Servo", template(obj) {
-                        return `<span class="webix_icon servo mdi mdi-toggle-switch-${obj.servo ? "outline" : "off"}"></span>`
-                    }, width: 80
-                },
-                {
-                    id: "reference", header: "Reference", width: 100
-                },
-                {
                     id: "home", header: "", width: 100, template() {
                         return `<div class='webix_el_button home webix_primary'><button class="webix_button">Home</button></div>`
                     }
@@ -83,18 +75,11 @@ export default class MotorsWidget extends WaltzWidget {
                             [motorId]: target
                         })
                 },
-                "servo": (ev, id) => {
+                "home": (ev, id) => {
                     const [ctrlId, crstlId, motorId] = id.row.split(':')
-                    const newServo = !this.view.getItem(id.row).servo;
                     const controller = this.app.getController(ctrlId);
                     controller
-                        .toggleServo({
-                            [motorId]: newServo
-                        })
-
-                },
-                "home": (ev, id) => {
-
+                        .home([motorId])
                 }
             }
         }
