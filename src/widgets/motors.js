@@ -59,7 +59,12 @@ export default class MotorsWidget extends WaltzWidget {
                 },
                 {
                     id: "stop", header: "", width: 100, template() {
-                        return `<div class='webix_el_button webix_danger'><button class="webix_button">Stop</button></div>`
+                        return `<div class='webix_el_button stop webix_danger'><button class="webix_button">Stop</button></div>`
+                    }
+                },
+                {
+                    id: "refresh", header: "", width: 100, template() {
+                        return `<div class='webix_el_button refresh webix_base'><button class="webix_button">Refresh</button></div>`
                     }
                 },
                 {id: "dummy", header: "", fillspace: true}
@@ -80,6 +85,14 @@ export default class MotorsWidget extends WaltzWidget {
                     const controller = this.app.getController(ctrlId);
                     controller
                         .home([motorId])
+                },
+                "stop": (ev, id) => {
+                    throw new Error("Not yet implemented!")
+                },
+                "refresh": (ev, id) => {
+                    const [ctrlId, crstlId, motorId] = id.row.split(':')
+                    const controller = this.app.getController(ctrlId);
+                    controller.position()
                 }
             }
         }

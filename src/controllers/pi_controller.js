@@ -127,6 +127,24 @@ export default class PiAxisController extends Controller {
             })
     }
 
+    position() {
+        const client = new PiControllerClient(this.controller);
+        client
+            .position()
+            .then(resp => {
+                Object.keys(values).forEach(key => {
+                    if (resp[key] === values[key])
+                        this.controller.motors.updateItem(key, {position: resp[key]});
+                    else
+                        this.dispatchError(new Error(`Failed to home motor ${key} in controller ${this.controller.ip}`))
+                })
+            })
+            .catch(err => {
+                this.dispatchError(err);
+                throw err;//abort Promise
+            })
+    }
+
     stop() {
         const client = new PiControllerClient(this.controller);
         client
@@ -135,8 +153,7 @@ export default class PiAxisController extends Controller {
                 this.dispatch(`Controller ${this.controller.ip} has been stopped`, kPiAxisStop);
             })
             .catch(err => {
-                this.dispatchError(err);
-                throw err;//abort Promise
+                this.dispatch(`Controller ${this.controller.ip} has been stopped`, kPiAxisStop);//STP cmd raises exception
             })
     }
 }

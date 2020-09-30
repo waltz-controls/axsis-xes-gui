@@ -3,10 +3,11 @@ import {kMotorsWidget} from "widgets/motors";
 import {kCrystalsWidget} from "widgets/crystals";
 import ControllerWidget from "./controller";
 import PiAxisController, {kPiAxisControllerCtx, kPiAxisStop} from "controllers/pi_controller";
-import {kFindAll} from "utils";
 
 const kAxsisWidget = "widget:main";
 const kAnyTopic = "*";
+
+const kAllAxis = ["1", "3", "5", "7", "9", "11", "13", "15", "17", "19", "21", "23"];
 
 export default class AxsisMain extends WaltzWidget {
     constructor(app) {
@@ -109,13 +110,13 @@ export default class AxsisMain extends WaltzWidget {
 
     async homeAll() {
         const controllers = await this.app.getContext(kPiAxisControllerCtx);
-        controllers.forEach(controller => new PiAxisController(this.app, controller).home(null))
+        controllers.forEach(controller => new PiAxisController(this.app, controller).home(kAllAxis))
     }
 
     async toggleServo(value) {
         const controllers = await this.app.getContext(kPiAxisControllerCtx);
         controllers.forEach(controller => new PiAxisController(this.app, controller).toggleServo(
-            controller.motors.find(kFindAll).reduce((obj, motor) => (obj[motor.id] = value, obj), {})
+            kAllAxis.reduce((obj, id) => (obj[id] = value, obj), {})
         ))
     }
 }
