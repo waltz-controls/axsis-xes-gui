@@ -2,7 +2,13 @@ import {WaltzWidget} from "@waltz-controls/middleware";
 import {kMotorsWidget} from "widgets/motors";
 import {kCrystalsWidget} from "widgets/crystals";
 import ControllerWidget from "./controller";
-import PiAxisController, {kPiAxisControllerCtx, kPiAxisStop} from "controllers/pi_controller";
+import PiAxisController, {
+    kPiAxisController,
+    kPiAxisControllerCtx,
+    kPiAxisControllerDo,
+    kPiAxisControllerDone,
+    kPiAxisStop
+} from "controllers/pi_controller";
 
 const kAxsisWidget = "widget:main";
 const kAnyTopic = "*";
@@ -12,6 +18,13 @@ const kAllAxis = ["1", "3", "5", "7", "9", "11", "13", "15", "17", "19", "21", "
 export default class AxsisMain extends WaltzWidget {
     constructor(app) {
         super(kAxsisWidget, app);
+
+        this.listen(() => {
+            this.$view.showProgress()
+        }, kPiAxisControllerDo, kPiAxisController)
+        this.listen(() => {
+            this.$view.hideProgress()
+        }, kPiAxisControllerDone, kPiAxisController)
 
         this.listen(msg => {
             webix.message({
@@ -101,6 +114,8 @@ export default class AxsisMain extends WaltzWidget {
         controllers.forEach(controller => this.app.registerController(application => new PiAxisController(application, controller)))
 
         this.$view = webix.ui(this.ui(controllers))
+
+        webix.extend(this.$view, webix.ProgressBar)
     }
 
     async stopAll() {

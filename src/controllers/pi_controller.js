@@ -5,6 +5,8 @@ export const kPiAxisControllerCtx = "controllers";
 export const kPiAxisController = "controller:pi"
 export const kPiAxisUpdateMotor = "controller:pi:updateMotor";
 export const kPiAxisStop = "controller:pi:stop";
+export const kPiAxisControllerDo = "controller:pi:do";
+export const kPiAxisControllerDone = "controller:pi:done";
 
 export default class PiAxisController extends Controller {
     constructor(app, controller) {
@@ -30,6 +32,7 @@ export default class PiAxisController extends Controller {
      * @returns {Promise<PiController>}
      */
     initialize() {
+        this.dispatch(`Initializing controller ${this.controller.ip}...`, kPiAxisControllerDo, kPiAxisController);
         const client = new PiControllerClient(this.controller);
         return client.version()
             .then(resp => {
@@ -64,6 +67,10 @@ export default class PiAxisController extends Controller {
                 )
                 return this.controller;
             })
+            .then(controller => {
+                this.dispatch(`Initializing controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
+                return controller;
+            })
             .catch(err => {
                 this.dispatchError(err);
                 throw err;//abort Promise
@@ -71,6 +78,7 @@ export default class PiAxisController extends Controller {
     }
 
     toggleServo(values) {
+        this.dispatch(`Toggling Servo mode on controller ${this.controller.ip}...`, kPiAxisControllerDo, kPiAxisController);
         const client = new PiControllerClient(this.controller);
         client
             .toggleServo(values)
@@ -82,6 +90,7 @@ export default class PiAxisController extends Controller {
                         this.dispatchError(new Error(`Failed to toggle Servo for motor ${key} in controller ${this.controller.ip}`))
 
                 })
+                this.dispatch(`Toggling Servo mode on controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
             })
             .catch(err => {
                 this.dispatchError(err);
@@ -90,6 +99,7 @@ export default class PiAxisController extends Controller {
     }
 
     move(values) {
+        this.dispatch(`Moving controller ${this.controller.ip}...`, kPiAxisControllerDo, kPiAxisController);
         const client = new PiControllerClient(this.controller);
         client
             .move(values)
@@ -101,6 +111,7 @@ export default class PiAxisController extends Controller {
                         this.dispatchError(new Error(`Failed to move motor ${key} in controller ${this.controller.ip} from ${resp[key]} to ${values[key]}`))
 
                 })
+                this.dispatch(`Moving controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
             })
             .catch(err => {
                 this.dispatchError(err);
@@ -109,6 +120,7 @@ export default class PiAxisController extends Controller {
     }
 
     home(values) {
+        this.dispatch(`Referencing controller ${this.controller.ip}...`, kPiAxisControllerDo, kPiAxisController);
         const client = new PiControllerClient(this.controller);
         client
             .home(values)
@@ -117,6 +129,8 @@ export default class PiAxisController extends Controller {
                     values.forEach(key => {
                         this.controller.motors.updateItem(key, {position: resp[key]});
                     })
+
+                this.dispatch(`Referencing controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
             })
             .catch(err => {
                 this.dispatchError(err);
@@ -125,6 +139,7 @@ export default class PiAxisController extends Controller {
     }
 
     position() {
+        this.dispatch(`Reading position on controller ${this.controller.ip}...`, kPiAxisControllerDo, kPiAxisController);
         const client = new PiControllerClient(this.controller);
         client
             .position()
@@ -132,6 +147,7 @@ export default class PiAxisController extends Controller {
                 Object.keys(resp).forEach(key => {
                     this.controller.motors.updateItem(key, {position: resp[key]});
                 })
+                this.dispatch(`Reading position on controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
             })
             .catch(err => {
                 this.dispatchError(err);
@@ -140,13 +156,16 @@ export default class PiAxisController extends Controller {
     }
 
     stop() {
+        this.dispatch(`Stopping controller ${this.controller.ip}...`, kPiAxisControllerDo, kPiAxisController);
         const client = new PiControllerClient(this.controller);
         client
             .stop()
             .then(resp => {
+                this.dispatch(`Stopping controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
                 this.dispatch(`Controller ${this.controller.ip} has been stopped`, kPiAxisStop);
             })
             .catch(err => {
+                this.dispatch(`Stopping controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
                 this.dispatch(`Controller ${this.controller.ip} has been stopped`, kPiAxisStop);//STP cmd raises exception
             })
     }
