@@ -105,11 +105,7 @@ export default class PiAxisController extends Controller {
             .move(values)
             .then(resp => {
                 Object.keys(values).forEach(key => {
-                    if (resp[key] === values[key])
-                        this.controller.motors.updateItem(key, {position: resp[key]});
-                    else
-                        this.dispatchError(new Error(`Failed to move motor ${key} in controller ${this.controller.ip} from ${resp[key]} to ${values[key]}`))
-
+                    this.controller.motors.updateItem(key, {position: resp[key]});
                 })
                 this.dispatch(`Moving controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
             })
