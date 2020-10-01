@@ -1,18 +1,11 @@
 import {WaltzWidget} from "@waltz-controls/middleware";
 import {kPiAxisController, kPiAxisControllerCtx, kPiAxisUpdateMotor} from "controllers/pi_controller";
 import {kCrystalsWidget, kToggleMotorVisibility} from "widgets/crystals";
+import {getCrystalId} from "utils";
 
 const kFindAll = () => true;
 
 export const kMotorsWidget = "widget:motor";
-
-function getCrystalId(motorId, cntrlNdx) {
-    if (['1', '3', '5'].includes(motorId)) return 1 + cntrlNdx * 4;
-    if (['7', '9', '11'].includes(motorId)) return 2 + cntrlNdx * 4;
-    if (['13', '15', '17'].includes(motorId)) return 3 + cntrlNdx * 4;
-    if (['19', '21', '23'].includes(motorId)) return 4 + cntrlNdx * 4;
-    return undefined;
-}
 
 export default class MotorsWidget extends WaltzWidget {
     constructor(app) {

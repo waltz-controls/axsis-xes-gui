@@ -100,7 +100,7 @@ export default class AxsisMain extends WaltzWidget {
 
         controllers.forEach(controller => this.app.registerController(application => new PiAxisController(application, controller)))
 
-        webix.ui(this.ui(controllers))
+        this.$view = webix.ui(this.ui(controllers))
     }
 
     async stopAll() {

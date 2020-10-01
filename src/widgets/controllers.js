@@ -141,6 +141,8 @@ export default class ControllersWidget extends WaltzWidget {
             const main = await this.app.getContext(kMainApp);
             main.registerContext(kPiAxisControllerCtx, controllers);
             main.run();
+        }).catch(err => {
+            this.dispatchError(err, kPiAxisController)
         })
     }
 }
