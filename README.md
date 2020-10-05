@@ -2,6 +2,8 @@
 
 # AXSIS-GUI
 
+![](Screenshot_20201005_132426.png)
+
 WebGUI application for AXSIS-XES
 
 ```bash
