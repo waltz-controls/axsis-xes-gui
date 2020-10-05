@@ -1,3 +1,5 @@
+[![time tracker](https://wakatime.com/badge/github/Ingvord/axsis-xes-gui.svg)](https://wakatime.com/badge/github/Ingvord/axsis-xes-gui)
+
 # AXSIS-GUI
 
 WebGUI application for AXSIS-XES
