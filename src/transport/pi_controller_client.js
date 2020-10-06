@@ -63,10 +63,14 @@ export default class PiControllerClient {
     }
 
     //TODO axis id
-    stop() {
+    stop(values) {
         const url = `${this.endpoint}/controllers/${this.controller.id}/stop?ip=${this.controller.ip}&port=${this.controller.port}`
         return fetch(url, {
-            method: 'PUT'
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
         })
             .then(resp => {
                 if (resp.ok) {

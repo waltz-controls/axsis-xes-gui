@@ -80,7 +80,10 @@ export default class MotorsWidget extends WaltzWidget {
                         .home([motorId])
                 },
                 "stop": (ev, id) => {
-                    throw new Error("Not yet implemented!")
+                    const [ctrlId, crstlId, motorId] = id.row.split(':')
+                    const controller = this.app.getController(ctrlId);
+                    controller
+                        .stop([motorId])
                 },
                 "refresh": (ev, id) => {
                     const [ctrlId, crstlId, motorId] = id.row.split(':')

@@ -120,7 +120,7 @@ export default class AxsisMain extends WaltzWidget {
 
     async stopAll() {
         const controllers = await this.app.getContext(kPiAxisControllerCtx);
-        controllers.forEach(controller => new PiAxisController(this.app, controller).stop())
+        controllers.forEach(controller => new PiAxisController(this.app, controller).stop(kAllAxis))
     }
 
     async homeAll() {

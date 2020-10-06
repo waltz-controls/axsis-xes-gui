@@ -151,11 +151,11 @@ export default class PiAxisController extends Controller {
             })
     }
 
-    stop() {
+    stop(values) {
         this.dispatch(`Stopping controller ${this.controller.ip}...`, kPiAxisControllerDo, kPiAxisController);
         const client = new PiControllerClient(this.controller);
         client
-            .stop()
+            .stop(values)
             .then(resp => {
                 this.dispatch(`Stopping controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
                 this.dispatch(`Controller ${this.controller.ip} has been stopped`, kPiAxisStop);
