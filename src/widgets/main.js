@@ -36,10 +36,10 @@ export default class AxsisMain extends WaltzWidget {
         this.listen({
             next() {
             }, error(err) {
+                this.$view.hideProgress()
                 webix.message({
                     text: err,
-                    type: "error",
-                    expire: 5000
+                    type: "error"
                 });
             }
         }, kAnyTopic)
