@@ -67,7 +67,7 @@ export default class MotorsWidget extends WaltzWidget {
                     const [ctrlId, crstlId, motorId] = id.row.split(':')
                     this.view.editStop();
                     const target = parseFloat(this.view.getItem(id.row).position);
-                    const controller = this.app.getController(ctrlId);
+                    const controller = this.app.getController(`magix.${ctrlId}`);
                     controller
                         .move({
                             [motorId]: target

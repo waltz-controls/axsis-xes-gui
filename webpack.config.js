@@ -75,6 +75,9 @@ module.exports = function (env) {
                 "/axsis": {
                     target: 'http://localhost:5000'
                 },
+                "/magix": {
+                    target: 'http://localhost:8080'
+                },
                 "/user-context": {
                     target: 'http://localhost:3000'
                 }

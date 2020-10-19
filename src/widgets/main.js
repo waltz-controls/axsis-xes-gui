@@ -9,6 +9,7 @@ import PiAxisController, {
     kPiAxisControllerDone,
     kPiAxisStop
 } from "controllers/pi_controller";
+import MagixPiController from "controllers/magix_pi_controller";
 
 const kAxsisWidget = "widget:main";
 const kAnyTopic = "*";
@@ -35,7 +36,7 @@ export default class AxsisMain extends WaltzWidget {
 
         this.listen({
             next() {
-            }, error(err) {
+            }, error:(err) =>{
                 this.$view.hideProgress()
                 webix.message({
                     text: err,
@@ -112,6 +113,7 @@ export default class AxsisMain extends WaltzWidget {
         const controllers = await this.app.getContext(kPiAxisControllerCtx);
 
         controllers.forEach(controller => this.app.registerController(application => new PiAxisController(application, controller)))
+        controllers.forEach(controller => this.app.registerController(application => new MagixPiController(application, controller)))
 
         this.$view = webix.ui(this.ui(controllers))
 

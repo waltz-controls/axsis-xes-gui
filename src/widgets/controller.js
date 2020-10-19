@@ -126,7 +126,7 @@ export default class ControllerWidget extends WaltzWidget {
      * @param motorIds
      */
     decrementAngle(crstlId, value, motorIds) {
-        const controller = this.app.getController(`${this.controller.id}`)
+        const controller = this.app.getController(`magix.${this.controller.id}`)
 
         const motors = controller.controller.motors;
         const m1 = motors.getItem(motorIds[0]);
@@ -168,7 +168,7 @@ export default class ControllerWidget extends WaltzWidget {
      * @param motorIds
      */
     incrementAngle(crstlId, value, motorIds) {
-        const controller = this.app.getController(`${this.controller.id}`)
+        const controller = this.app.getController(`magix.${this.controller.id}`)
 
         const motors = controller.controller.motors;
         const m1 = motors.getItem(motorIds[0]);
@@ -210,7 +210,7 @@ export default class ControllerWidget extends WaltzWidget {
      * @param motorIds
      */
     leftBias(crstlId, value, motorIds) {
-        const controller = this.app.getController(`${this.controller.id}`)
+        const controller = this.app.getController(`magix.${this.controller.id}`)
 
         const motors = controller.controller.motors;
         const m1 = motors.getItem(motorIds[0]);
@@ -252,7 +252,7 @@ export default class ControllerWidget extends WaltzWidget {
      * @param motorIds
      */
     rightBias(crstlId, value, motorIds) {
-        const controller = this.app.getController(`${this.controller.id}`)
+        const controller = this.app.getController(`magix.${this.controller.id}`)
 
         const motors = controller.controller.motors;
         const m1 = motors.getItem(motorIds[0]);
@@ -294,7 +294,7 @@ export default class ControllerWidget extends WaltzWidget {
      * @param motorIds
      */
     backwardFocus(crstlId, value, motorIds) {
-        const controller = this.app.getController(`${this.controller.id}`)
+        const controller = this.app.getController(`magix.${this.controller.id}`)
 
         const motors = controller.controller.motors;
         const m1 = motors.getItem(motorIds[0]);
@@ -311,7 +311,7 @@ export default class ControllerWidget extends WaltzWidget {
     }
 
     forwardFocus(crstlId, value, motorIds) {
-        const controller = this.app.getController(`${this.controller.id}`)
+        const controller = this.app.getController(`magix.${this.controller.id}`)
 
         const motors = controller.controller.motors;
         const m1 = motors.getItem(motorIds[0]);

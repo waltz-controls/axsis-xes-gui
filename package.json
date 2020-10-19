@@ -64,7 +64,9 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
-    "@waltz-controls/middleware": "^2.0.0"
+    "@waltz-controls/middleware": "^2.0.0",
+    "@waltz-controls/waltz-magix-plugin": "^1.0.6",
+    "rxjs": "^6.6.3"
   },
   "runtimeDependencies": [
     "@waltz-controls/middleware"
