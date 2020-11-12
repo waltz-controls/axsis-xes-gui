@@ -129,8 +129,6 @@ export default class ControllerWidget extends WaltzWidget {
         const controller = this.app.getController(`${this.controller.id}`)
 
         const motors = controller.controller.motors;
-        const m1 = motors.getItem(motorIds[0]);
-        const m2 = motors.getItem(motorIds[1]);
         const m3 = motors.getItem(motorIds[2]);
 
         let values;
@@ -140,8 +138,6 @@ export default class ControllerWidget extends WaltzWidget {
             case 5:
             case 7:
                 values = {
-                    [motorIds[0]]: m1.position + value,
-                    [motorIds[1]]: m2.position + value,
                     [motorIds[2]]: m3.position - value
                 }
                 break;
@@ -150,8 +146,6 @@ export default class ControllerWidget extends WaltzWidget {
             case 6:
             case 8:
                 values = {
-                    [motorIds[0]]: m1.position - value,
-                    [motorIds[1]]: m2.position - value,
                     [motorIds[2]]: m3.position + value
                 }
                 break;
@@ -171,8 +165,6 @@ export default class ControllerWidget extends WaltzWidget {
         const controller = this.app.getController(`${this.controller.id}`)
 
         const motors = controller.controller.motors;
-        const m1 = motors.getItem(motorIds[0]);
-        const m2 = motors.getItem(motorIds[1]);
         const m3 = motors.getItem(motorIds[2]);
 
         let values;
@@ -182,8 +174,6 @@ export default class ControllerWidget extends WaltzWidget {
             case 5:
             case 7:
                 values = {
-                    [motorIds[0]]: m1.position - value,
-                    [motorIds[1]]: m2.position - value,
                     [motorIds[2]]: m3.position + value
                 }
                 break;
@@ -192,8 +182,6 @@ export default class ControllerWidget extends WaltzWidget {
             case 6:
             case 8:
                 values = {
-                    [motorIds[0]]: m1.position + value,
-                    [motorIds[1]]: m2.position + value,
                     [motorIds[2]]: m3.position - value
                 }
                 break;
