@@ -44,24 +44,19 @@ export default class MagixPiController extends Controller {
 
     async move(values){
         const magix = await this.app.getContext(kMagixContext);
-
         const id = +new Date();
-
         magix.observe(kChannel).pipe(
             tap(msg => console.debug(msg)),
             filter(msg => msg.parentId === id)
         ).subscribe(msg => {
             this.dispatch(`Moving controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
         })
-
         magix.observe(kChannel).pipe(
             tap(msg => console.debug(msg)),
             filter(msg => msg.parentId === id && msg.action === 'error')
         ).subscribe(msg => {
             this.dispatchError(new Error(msg.payload.error));
         })
-
-
         this.dispatch(`Moving controller ${this.controller.ip}...`, kPiAxisControllerDo, kPiAxisController);
         magix.broadcast(new Message({
             id,
