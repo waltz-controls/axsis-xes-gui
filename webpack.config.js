@@ -17,6 +17,7 @@ module.exports = function (env) {
     const config = {
         mode: production ? "production" : "development",
         entry: {
+            libs: "./import/libs.js",
             index: "./index.js"
         },
         output: {
@@ -41,15 +42,18 @@ module.exports = function (env) {
                     use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"]
                 },
                 {
-                    test: /webix\.js$/,
-                    use: ['script-loader']
+                    test: /webix\.(min\.|)js$/,
+                    use: "script-loader"
                 }
             ]
         },
         stats: "minimal",
         resolve: {
             extensions: [".js"],
-            modules: ["./src", "node_modules"]
+            modules: ["./src", "node_modules"],
+            alias:{
+                webix:path.resolve(__dirname, "node_modules", "webix", "webix.min.js")
+            }
         },
         plugins: [
             new MiniCssExtractPlugin({
@@ -59,14 +63,7 @@ module.exports = function (env) {
                 VERSION: `"${pack.version}"`,
                 APPNAME: `"${pack.name}"`,
                 PRODUCTION: production,
-                BUILD_AS_MODULE: (asmodule || standalone),
-                REST_API_PROTOCOL: `"${env.REST_API_PROTOCOL}"`,
-                REST_API_HOST: `"${env.REST_API_HOST}"`,
-                REST_API_PORT: `${env.REST_API_PORT}`,
-                REST_API_VERSION: `"${env.REST_API_VERSION}"`,
-                TANGO_HOST: `"${env.TANGO_HOST}"`,
-                TANGO_PORT: `${env.TANGO_PORT}`,
-                USER_CONTEXT_URL: `"${env.USER_CONTEXT_URL}"`
+                BUILD_AS_MODULE: (asmodule || standalone)
             })
         ],
         devServer: {
