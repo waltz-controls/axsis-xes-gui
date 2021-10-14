@@ -17,6 +17,7 @@ module.exports = function (env) {
     const config = {
         mode: production ? "production" : "development",
         entry: {
+            styles: "./import/styles.js",
             libs: "./import/libs.js",
             index: "./index.js"
         },
@@ -44,21 +45,28 @@ module.exports = function (env) {
                 {
                     test: /webix\.(min\.|)js$/,
                     use: "script-loader"
+                },
+                {
+                    test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[name].[ext]',
+                                outputPath: 'fonts/'
+                            }
+                        }
+                    ]
                 }
             ]
         },
         stats: "minimal",
         resolve: {
             extensions: [".js"],
-            modules: ["./src", "node_modules"],
-            alias:{
-                webix:path.resolve(__dirname, "node_modules", "webix", "webix.min.js")
-            }
+            modules: ["./src", "node_modules"]
         },
         plugins: [
-            new MiniCssExtractPlugin({
-                filename: "[name].css"
-            }),
+            new MiniCssExtractPlugin(),
             new webpack.DefinePlugin({
                 VERSION: `"${pack.version}"`,
                 APPNAME: `"${pack.name}"`,

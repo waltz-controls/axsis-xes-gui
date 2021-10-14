@@ -1,1 +1,1 @@
-import "webix";
+import "webix/webix";
