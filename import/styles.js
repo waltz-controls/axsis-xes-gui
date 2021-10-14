@@ -1,2 +1,1 @@
-import "webix/webix.css";
-import "webix/skins/compact.css";
+import "webix/skins/mini.min.css";

@@ -48,15 +48,7 @@ module.exports = function (env) {
                 },
                 {
                     test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                    use: [
-                        {
-                            loader: 'file-loader',
-                            options: {
-                                name: '[name].[ext]',
-                                outputPath: 'fonts/'
-                            }
-                        }
-                    ]
+                    type: 'asset/resource'
                 }
             ]
         },
@@ -75,14 +67,12 @@ module.exports = function (env) {
             })
         ],
         devServer: {
-            stats: "errors-only",
+            static: path.resolve(__dirname),
             proxy: {
                 "/axsis": {
                     target: 'http://localhost:5000'
                 },
-                "/magix": {
-                    target: 'http://localhost:8080'
-                },
+                "/magix": 'http://localhost:8080',
                 "/user-context": {
                     target: 'http://localhost:3000'
                 }

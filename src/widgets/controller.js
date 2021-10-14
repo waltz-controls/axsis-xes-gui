@@ -13,13 +13,13 @@ function createCrystalPanels(controller, root) {
                 {id: "id", header: `Crystal ${id}`, width: 150},
                 {
                     id: "neg", header: "", width: 30, template() {
-                        return `<div class='webix_el_button negative webix_base'><span class="webix_icon mdi mdi-minus"></span></div>`
+                        return `<div class='webix_el_button negative webix_base'><span class="webix_icon wxi-minus"></span></div>`
                     }
                 },
                 {id: "value", header: "Value", width: 120, editor: "text"},
                 {
                     id: "pos", header: "", template() {
-                        return `<div class='webix_el_button positive webix_base'><span class="webix_icon mdi mdi-plus"></span></div>`
+                        return `<div class='webix_el_button positive webix_base'><span class="webix_icon wxi-plus"></span></div>`
                     }, width: 30
                 },
                 {
