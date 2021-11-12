@@ -49,21 +49,24 @@ export default class MagixPiController extends Controller {
 
         const id = +new Date();
 
-        magix.observe(kChannel).pipe(
+        const moveSubscription = magix.observe(kChannel).pipe(
+            timeout(kTimeout),
             tap(msg => console.debug(msg)),
-            filter(msg => msg.parentId === id && msg.action === "done"),
-            timeout(kTimeout)
+            filter(msg => msg.parentId === id && msg.action === "done")
         ).subscribe(msg => {
             this.dispatch(`Moving controller ${this.controller.ip} is done!`, kPiAxisControllerDone, kPiAxisController);
+            moveSubscription.unsubscribe();
         }, err => {
             this.dispatchError(err);
+            moveSubscription.unsubscribe();
         })
 
-        magix.observe(kChannel).pipe(
+        const errorSubscription = magix.observe(kChannel).pipe(
             tap(msg => console.debug(msg)),
             filter(msg => msg.parentId === id && msg.action === 'error')
         ).subscribe(msg => {
             this.dispatchError(new Error(msg.payload.error));
+            errorSubscription.unsubscribe();
         })
 
 

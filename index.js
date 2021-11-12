@@ -5,7 +5,7 @@ import MotorsWidget from "widgets/motors";
 import CrystalsWidget from "widgets/crystals";
 import {Magix} from "@waltz-controls/waltz-magix-plugin";
 
-const kMagixHost = '' // use same host
+const kMagixHost = 'http://localhost:8080'
 export const kMagixContext = 'context:magix'
 export const kMainApp = "app:main";
 
