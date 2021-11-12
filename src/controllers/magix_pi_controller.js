@@ -1,6 +1,6 @@
 import {Controller} from "@waltz-controls/middleware";
 import {Message} from "@waltz-controls/waltz-magix-plugin"
-import {filter, tap} from "rxjs/operators"
+import {filter, tap, timeout} from "rxjs/operators"
 import {kMagixContext} from "../../index";
 import {
     kPiAxisController,
@@ -9,6 +9,8 @@ import {
     kPiAxisUpdateMotor
 } from "controllers/pi_controller";
 
+
+const kTimeout = 30000;
 
 const kChannel = 'axsis-xes'
 const kTarget = 'axsis'
@@ -49,9 +51,12 @@ export default class MagixPiController extends Controller {
 
         magix.observe(kChannel).pipe(
             tap(msg => console.debug(msg)),
-            filter(msg => msg.parentId === id && msg.action === "done")
+            filter(msg => msg.parentId === id && msg.action === "done"),
+            timeout(kTimeout)
         ).subscribe(msg => {
             this.dispatch(`Moving controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
+        }, err => {
+            this.dispatchError(err);
         })
 
         magix.observe(kChannel).pipe(
