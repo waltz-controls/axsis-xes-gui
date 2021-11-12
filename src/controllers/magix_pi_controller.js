@@ -54,7 +54,7 @@ export default class MagixPiController extends Controller {
             filter(msg => msg.parentId === id && msg.action === "done"),
             timeout(kTimeout)
         ).subscribe(msg => {
-            this.dispatch(`Moving controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
+            this.dispatch(`Moving controller ${this.controller.ip} is done!`, kPiAxisControllerDone, kPiAxisController);
         }, err => {
             this.dispatchError(err);
         })
