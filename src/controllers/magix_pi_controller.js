@@ -49,7 +49,7 @@ export default class MagixPiController extends Controller {
 
         magix.observe(kChannel).pipe(
             tap(msg => console.debug(msg)),
-            filter(msg => msg.parentId === id)
+            filter(msg => msg.parentId === id && msg.action === "done")
         ).subscribe(msg => {
             this.dispatch(`Moving controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
         })
