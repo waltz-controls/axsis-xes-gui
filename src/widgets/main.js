@@ -84,7 +84,7 @@ export default class AxsisMain extends WaltzWidget {
                                     css: "webix_danger",
                                     click: () => {
                                         this.stopAll()
-                                    }
+                                    }, disabled: true
                                 }]
                             )
                     }

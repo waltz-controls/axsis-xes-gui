@@ -165,4 +165,19 @@ export default class PiAxisController extends Controller {
                 this.dispatch(`Controller ${this.controller.ip} has been stopped`, kPiAxisStop);//STP cmd raises exception
             })
     }
+
+    reboot(){
+        this.dispatch(`Rebooting controller ${this.controller.ip}...`, kPiAxisControllerDo, kPiAxisController);
+        const client = new PiControllerClient(this.controller);
+        client
+            .reboot()
+            .then(resp => {
+                this.dispatch(`Rebooting controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
+                this.dispatch(`Controller ${this.controller.ip} has been rebooted`, kPiAxisStop);
+            })
+            .catch(err => {
+                this.dispatch(`Rebooting controller ${this.controller.ip}...`, kPiAxisControllerDone, kPiAxisController);
+                this.dispatch(`Controller ${this.controller.ip} has been rebooted`, kPiAxisStop);//STP cmd raises exception
+            })
+    }
 }

@@ -131,4 +131,17 @@ export default class PiControllerClient {
                     throw new Error(`${resp.status}: ${resp.statusText}<p>${url}</p>`)
             })
     }
+
+    reboot() {
+        const url = `${this.endpoint}/controllers/${this.controller.id}/reboot?ip=${this.controller.ip}&port=${this.controller.port}`
+        return fetch(url, {
+            method: 'PUT'
+        })
+            .then(resp => {
+                if (resp.ok) {
+                    return resp.json();
+                } else
+                    throw new Error(`${resp.status}: ${resp.statusText}<p>${url}</p>`)
+            })
+    }
 }
