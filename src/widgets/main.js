@@ -10,12 +10,12 @@ import PiAxisController, {
     kPiAxisStop
 } from "controllers/pi_controller";
 import MagixPiController from "controllers/magix_pi_controller";
-import {getCrystalId} from "../utils";
+import {getCrystalId, kAllAxis} from "../utils";
 
 const kAxsisWidget = "widget:main";
 const kAnyTopic = "*";
 
-const kAllAxis = ["1", "3", "5", "7", "9", "11", "13", "15", "17", "19", "21", "23"];
+
 
 export default class AxsisMain extends WaltzWidget {
     constructor(app) {
@@ -74,17 +74,19 @@ export default class AxsisMain extends WaltzWidget {
                                 click: () => {
                                     this.homeAll();
                                 }
-                            },
-                            {
-                                view: "button",
-                                value: "STOP ALL",
-                                css: "webix_danger",
-                                click: () => {
-                                    this.stopAll()
-                                }
                             }
                             //TODO replace with mount points
                         ].concat(this.app.getWidget(kCrystalsWidget).ui())
+                            .concat([
+                                {
+                                    view: "button",
+                                    value: "STOP ALL",
+                                    css: "webix_danger",
+                                    click: () => {
+                                        this.stopAll()
+                                    }
+                                }]
+                            )
                     }
                 },
                 {

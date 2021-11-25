@@ -1,6 +1,6 @@
 import {WaltzWidget} from "@waltz-controls/middleware";
-import {kPiAxisController, kPiAxisUpdateMotor} from "controllers/pi_controller";
-import {getCrystalId, getMotorIds} from "utils";
+import PiAxisController, {kPiAxisController, kPiAxisUpdateMotor} from "controllers/pi_controller";
+import {getCrystalId, getMotorIds, kAllAxis} from "utils";
 
 function createCrystalPanels(controller, root) {
     return [1, 2, 3, 4]
@@ -111,10 +111,23 @@ export default class ControllerWidget extends WaltzWidget {
     }
 
     ui() {
+        const that = this;
         return {
             header: `${this.controller.ip}`,
             body: {
-                rows: createCrystalPanels(this.controller, this)
+                rows: [
+                    {
+                        view: "toolbar",
+                        cols:[
+                            { view:"button", value:"Home", width:100, align:"left", css: "webix_primary", click(){
+                                    that.home()
+                                } },
+                            { view:"button", value:"Stop", width:100, align:"left", css: "webix_danger", click(){
+                                    that.stop()
+                                } }
+                        ]
+                    }
+                ].concat(createCrystalPanels(this.controller, this))
             }
         }
     }
@@ -327,5 +340,15 @@ export default class ControllerWidget extends WaltzWidget {
         controller.move(values);
     }
 
+    home(){
+        const that = this;
+        new PiAxisController(this.app, this.controller)
+            .home(kAllAxis)
+    }
 
+    stop(){
+        const that = this;
+        new PiAxisController(this.app, this.controller)
+            .stop(kAllAxis)
+    }
 }

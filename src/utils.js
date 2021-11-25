@@ -1,5 +1,7 @@
 export const kFindAll = () => true;
 
+export const kAllAxis = ["1", "3", "5", "7", "9", "11", "13", "15", "17", "19", "21", "23"];
+
 export function getMotorIds(crstlId) {
     if ('1' === crstlId || '5' === crstlId) return ['1', '3', '5'];
     if ('2' === crstlId || '6' === crstlId) return ['7', '9', '11'];
