@@ -10,6 +10,7 @@ import PiAxisController, {
     kPiAxisStop
 } from "controllers/pi_controller";
 import MagixPiController from "controllers/magix_pi_controller";
+import {getCrystalId} from "../utils";
 
 const kAxsisWidget = "widget:main";
 const kAnyTopic = "*";
@@ -68,7 +69,7 @@ export default class AxsisMain extends WaltzWidget {
                             },
                             {
                                 view: "button",
-                                value: "HOME",
+                                value: "HOME SELECTED",
                                 css: "webix_primary",
                                 click: () => {
                                     this.homeAll();
@@ -76,7 +77,7 @@ export default class AxsisMain extends WaltzWidget {
                             },
                             {
                                 view: "button",
-                                value: "STOP",
+                                value: "STOP ALL",
                                 css: "webix_danger",
                                 click: () => {
                                     this.stopAll()
@@ -127,7 +128,8 @@ export default class AxsisMain extends WaltzWidget {
 
     async homeAll() {
         const controllers = await this.app.getContext(kPiAxisControllerCtx);
-        controllers.forEach(controller => new PiAxisController(this.app, controller).home(kAllAxis))
+        controllers.forEach(controller => new PiAxisController(this.app, controller)
+            .home(kAllAxis.filter(motorId => $$(`${controller.id}:${getCrystalId(motorId, controller.id)}:${motorId}`).getValue() === 1)))//motor checkbox in the crystals accordion
     }
 
     async toggleServo(value) {

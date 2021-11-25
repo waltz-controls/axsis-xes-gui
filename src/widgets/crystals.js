@@ -19,15 +19,7 @@ function createCrystalPanels(root) {
                 view: "checkbox",
                 id: `${getCntrlId(crstlId)}:${crstlId}:${motorId}`,
                 labelRight: "motor " + motorId,
-                value: 1,
-                on: {
-                    onChange(newVal, oldVal) {
-                        root.dispatch({
-                            id: `${getCntrlId(crstlId)}:${crstlId}:${motorId}`,
-                            visible: newVal
-                        }, kToggleMotorVisibility, kCrystalsWidget)
-                    }
-                }
+                value: 1
             }))
         }
     }))
