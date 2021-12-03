@@ -1,7 +1,7 @@
 import {WaltzWidget} from "@waltz-controls/middleware";
 import {kPiAxisController, kPiAxisControllerCtx, kPiAxisUpdateMotor} from "controllers/pi_controller";
 import {kCrystalsWidget, kToggleMotorVisibility} from "widgets/crystals";
-import {getCrystalId} from "utils";
+import {getCrystalId, kAllAxis} from "utils";
 
 const kFindAll = () => true;
 
@@ -151,7 +151,9 @@ export default class MotorsWidget extends WaltzWidget {
 
         const data = controllers.map((controller, ndx) => ({
             ...(Object.fromEntries(["id", "ip", "port"].map(k => [k, controller[k]]))),
-            motors: controller.motors.serialize().reduce((result, motor) => {result[motor.id] = motor.position; return result}, {})
+            motors: controller.motors.serialize()
+                .filter(motor => kAllAxis.includes(motor.id))
+                .reduce((result, motor) => {result[motor.id] = motor.position; return result}, {})
         }));
 
         webix.html.download(new Blob([JSON.stringify(data)], {type: "application/json"}), `${new Date()}.json`);
