@@ -10,7 +10,7 @@ import {
 } from "controllers/pi_controller";
 
 
-const kTimeout = 30000;
+const kTimeout = 300;
 
 const kChannel = 'axsis-xes'
 const kTarget = 'axsis'
@@ -75,6 +75,9 @@ export default class MagixPiController extends Controller {
             id,
             target: kTarget,
             origin: 'axsis-gui',
+            user: 'web',
+            action: 'move',
+            parentId: null,
             payload: {
                 ip: this.controller.ip,
                 port: this.controller.port,
